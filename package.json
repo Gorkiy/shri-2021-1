@@ -1,0 +1,37 @@
+{
+  "name": "shri-homework-1",
+  "version": "1.0.0",
+  "description": "Nodejs homework #1",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server",
+    "upload": "node src/sendImage",
+    "merge": "node src/mergeImage"
+  },
+  "author": "Peter Yakovlev",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  },
+  "dependencies": {
+    "backrem": "^1.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
+    "express-slow-down": "^1.4.0",
+    "helmet": "^4.6.0",
+    "http-proxy-middleware": "^2.0.0",
+    "image-size": "^1.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "pug": "^3.0.2",
+    "request": "^2.88.2",
+    "uuid": "^8.3.2",
+    "ws": "^7.4.5"
+  }
+}
