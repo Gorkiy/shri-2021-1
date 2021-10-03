@@ -1,20 +1,21 @@
 const express = require('express');
 const Database = require("./Database");
-const { PORT, dbDumpFile, uploadsFolder } = require('./config');
+const { PORT, dbDumpFile } = require('./config');
 const db = new Database(dbDumpFile);
 const fs = require('fs');
 const multer = require('multer');
-const uploads = multer({ dest: uploadsFolder });
+const uploads = multer({ dest: 'db/uploads/' });
 const { replaceBackground } = require('backrem');
 const path = require('path');
 
 const app = express();
 
 const upload = async (req, res) => {
-  if (!req.file) {
+  if (!req.file || req.file.mimetype !== 'image/jpeg') {
     res.statusCode = 400;
-    res.end('Invalid request');
+    res.end('Bad request');
   }
+
   db.add(req.file);
   res.end(req.file.filename);
 }
@@ -61,7 +62,6 @@ const merge = async (req, res) => {
   )
     .then(
       (readableStream) => {
-        //readableStream.pipe(fs.createWriteStream('/var/www/svdom/test.jpg'));
         readableStream.on('end', () => {
           res.end();
         });

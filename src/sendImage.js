@@ -3,7 +3,7 @@ const request = require('request');
 const fs = require('fs');
 const path = require('path');
 
-var req = request.post(`http://localhost:${PORT}/upload`, function (err, resp, body) {
+var req = request.post(`http://localhost:${PORT}/upload`, function (err, res, body) {
   if (err) {
     console.log('Error!', err);
   } else {
@@ -12,4 +12,4 @@ var req = request.post(`http://localhost:${PORT}/upload`, function (err, resp, b
 });
 
 const form = req.form();
-form.append('file', fs.createReadStream(path.resolve(__dirname, 'assets/cat.jpg')));
+form.append('image', fs.createReadStream(path.resolve(__dirname, 'assets/cat.jpg')));
