@@ -1,15 +1,14 @@
 const express = require('express');
 const Database = require("./Database");
-const db = new Database('/var/www/svdom/dump.json');
+const { PORT, dbDumpFile } = require('./config');
+const db = new Database(dbDumpFile);
 const fs = require('fs');
 const multer = require('multer');
-const uploads = multer({dest: 'uploads/'});
-const {replaceBackground} = require("backrem");
-const path = require("path");
-//const sizeOf = require('image-size');
+const uploads = multer({ dest: 'uploads/' });
+const { replaceBackground } = require('backrem');
+const path = require('path');
 
 const app = express();
-
 
 const upload = async (req, res) => {
   if (!req.file) {
@@ -45,7 +44,7 @@ const merge = async (req, res) => {
   }
 
   if (req.query.color) {
-    if (!req.query.color.match(/\d{1,3},\d{1,3},\d{1,3}/g)){
+    if (!req.query.color.match(/\d{1,3},\d{1,3},\d{1,3}/g)) {
       delete req.query.color;
     }
   }
@@ -82,6 +81,6 @@ app.delete('/image/:id', deleteImage);
 app.get('/merge', merge);
 
 
-app.listen(8080, () => {
-  console.log(`Server started on port 3030`);
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
