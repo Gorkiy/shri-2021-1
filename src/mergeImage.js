@@ -2,6 +2,6 @@ const request = require('request');
 
 request
   .get(
-    'http://localhost:8080/merge?front=2b2178f65375d238013e408a68e576c9&back=7c96b410a4ba1b00941f99ad1ba03f1f&color=182,215,248&threshold=10',
+    'http://localhost:8080/merge?front=08bd67f90d273bceab56e40a2714f528&back=d55ecad3a613be6b6157042aa2747ea7&color=182,215,248&threshold=10',
     console.log
   );

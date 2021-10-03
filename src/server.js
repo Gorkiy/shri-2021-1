@@ -1,10 +1,10 @@
 const express = require('express');
 const Database = require("./Database");
-const { PORT, dbDumpFile } = require('./config');
+const { PORT, dbDumpFile, uploadsFolder } = require('./config');
 const db = new Database(dbDumpFile);
 const fs = require('fs');
 const multer = require('multer');
-const uploads = multer({ dest: 'uploads/' });
+const uploads = multer({ dest: uploadsFolder });
 const { replaceBackground } = require('backrem');
 const path = require('path');
 
@@ -74,7 +74,7 @@ const merge = async (req, res) => {
     });
 }
 
-app.post('/upload', uploads.single('file'), upload);
+app.post('/upload', uploads.single('image'), upload);
 app.get('/list', list);
 app.get('/image/:id', getImage);
 app.delete('/image/:id', deleteImage);
