@@ -32,7 +32,9 @@ class Database {
   }
 
   add(row) {
-    this.rows[row.filename] = row;
+    const id = row.filename;
+    row.id = id;
+    this.rows[id] = row;
     this.dump();
   }
 
