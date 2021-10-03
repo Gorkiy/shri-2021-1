@@ -1,21 +1,22 @@
 const fs = require('fs');
 
 class Database {
-
-  constructor(pathToDump) {
-    this.dumpPath = pathToDump;
-    this.rows = {};
-    this.restoreDump();
+  constructor(path) {
+    this.path = path;
+    this.images = {};
+    this.dump = this.dump.bind(this);
+    this.initFromDump = this.initFromDump.bind(this);
+    this.initFromDump();
   }
 
-  restoreDump() {
+  async initFromDump() {
     fs.promises
-      .readFile(this.dumpPath)
+      .readFile(this.path)
       .then((file) => {
           try {
             file = JSON.parse(file);
             for (let id in file) {
-              this.rows[id] = file[id];
+              this.images[id] = file[id];
             }
           } catch (e) {
             return;
@@ -25,35 +26,34 @@ class Database {
       .catch(console.warn);
   }
 
-  dump() {
+  async dump() {
     fs.promises
-      .writeFile(this.dumpPath, JSON.stringify(this.rows))
+      .writeFile(this.path, JSON.stringify(this.images))
       .catch(console.warn);
   }
 
-  add(row) {
-    const id = row.filename;
-    row.id = id;
-    this.rows[id] = row;
+  insert(image) {
+    this.images[image.id] = image;
     this.dump();
   }
 
   get(id) {
-    return this.rows[id] || null;
+    return this.images[id] || null;
   }
 
-  del(id) {
-    if (!this.rows[id]) {
+  remove(id) {
+    if (!this.images[id]) {
       return false;
     }
-    delete this.rows[id];
+    delete this.images[id];
     this.dump();
     return;
   }
 
-  all() {
-    return Object.values(this.rows);
+  getList() {
+    return Object.values(this.images);
   }
+
 }
 
 module.exports = Database;

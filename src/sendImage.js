@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 var req = request.post(`http://localhost:${PORT}/upload`, function (err, res, body) {
+  console.log('err: ', err);
   if (err) {
     console.log('Error!', err);
   } else {

@@ -11,17 +11,23 @@ const path = require('path');
 const app = express();
 
 const upload = async (req, res) => {
-  if (!req.file || req.file.mimetype !== 'image/jpeg') {
+  if (!req.file) {
     res.statusCode = 400;
     res.end('Bad request');
   }
 
-  db.add(req.file);
-  res.end(req.file.filename);
+  req.file.id = req.file.filename;
+  db.insert(req.file);
+
+  return res.json({
+    id: req.file.filename,
+    size: req.file,
+    createdAt: Date.now()
+  });
 }
 
 const list = async (req, res) => {
-  res.end(JSON.stringify(db.all()));
+  res.end(JSON.stringify(db.getList()));
 }
 
 const getImage = async (req, res) => {
@@ -29,7 +35,7 @@ const getImage = async (req, res) => {
 }
 
 const deleteImage = async (req, res) => {
-  res.end(JSON.stringify(db.del(req.params.id)));
+  res.end(JSON.stringify(db.remove(req.params.id)));
 }
 
 const merge = async (req, res) => {
@@ -79,7 +85,10 @@ app.get('/list', list);
 app.get('/image/:id', getImage);
 app.delete('/image/:id', deleteImage);
 app.get('/merge', merge);
-
+app.use((err, req, res, next) => {
+  res.statusCode = 500;
+  res.end('Unknow error');
+})
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
